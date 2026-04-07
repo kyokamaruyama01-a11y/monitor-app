@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     // 1. CPU負荷 (Linux用: 直近1分間の平均)
     $load = sys_getloadavg();
-    $cpuLoad = isset($load[0]) ? $load[0] : "N/A";
+    $cpuLoad = isset($load[0]) ? ($load[0] * 100) : "N/A";
 
     // 2. メモリ使用量 (MB)
     $memUsage = round(memory_get_usage(true) / 1024 / 1024, 2);
