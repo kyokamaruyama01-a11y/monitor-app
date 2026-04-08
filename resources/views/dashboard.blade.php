@@ -12,25 +12,41 @@
         .unit { font-size: 1rem; color: #888; }
         .status-ok { color: #48bb78; font-size: 0.8rem; margin-top: 5px; }
     </style>
-    <meta http-equiv="refresh" content="3"> <!-- 3秒ごとに更新 -->
+    <!-- refreshのメタタグは削除しました（Ajaxを使うため） -->
 </head>
 <body>
     <div class="dashboard">
         <div class="card">
             <div class="label">💻 CPU負荷</div>
-            <div class="value">{{ $cpu }}<span class="unit"> %</span></div>
+            <div class="value"><span id="cpu-value">{{ $cpu }}</span><span class="unit"> %</span></div>
             <div class="status-ok">● Running</div>
         </div>
         <div class="card">
-            <div class="label">🧠 メモリ</div>
-            <div class="value">{{ $memory }}<span class="unit"> MB</span></div>
+            <div class="label">🧠 メモリ使用率</div>
+            <div class="value"><span id="memory-value">{{ $memory }}</span><span class="unit"> %</span></div> <!-- MBから%に変更 -->
             <div class="status-ok">● Active</div>
         </div>
         <div class="card">
             <div class="label">💾 ディスク使用率</div>
-            <div class="value">{{ $disk }}<span class="unit"> %</span></div>
+            <div class="value"><span id="disk-value">{{ $disk }}</span><span class="unit"> %</span></div>
             <div class="status-ok">● Healthy</div>
         </div>
     </div>
+    <script>
+    function updateStats(){
+        fetch('/api/stats') 
+            .then(response => response.json())
+            .then(data => {
+                
+                document.getElementById('cpu-value').innerText = data.cpu;
+                document.getElementById('memory-value').innerText = data.memory;
+                document.getElementById('disk-value').innerText = data.disk;
+                console.log("Stats updated:", data); // 確認用
+            })
+            .catch(error => console.error('Error:', error));
+    }
+    // 3秒ごとに実行
+    setInterval(updateStats, 3000);
+    </script>
 </body>
 </html>
