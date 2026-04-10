@@ -15,7 +15,13 @@
         .val { font-size: 2rem; font-weight: bold; font-family: 'Consolas', monospace; }
         .graph { flex-grow: 1; background: #ffffff; position: relative; border-top: 1px solid #eee; }
         svg { width: 100%; height: 100%; display: block; }
-        polyline { fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke;}
+        polyline { 
+            fill: none; 
+            stroke-width: 1.5; 
+            stroke-linecap: round; 
+            stroke-linejoin: round; 
+            vector-effect: non-scaling-stroke; 
+        }
         .cpu-color { color: #3182ce; }
         .mem-color { color: #48bb78; }
         .disk-color { color: #ed8936; }
@@ -61,15 +67,11 @@
             fetch('/api/stats')
                 .then(res => res.json())
                 .then(data => {
-                    // CPUの上限を200、他を100として呼び出し
                     refresh('cpu', data.cpu, 'cpu-num', 'cpu-line', 200);
                     refresh('memory', data.memory, 'mem-num', 'mem-line', 100);
                     refresh('disk', data.disk, 'disk-num', 'disk-line', 100);
                 })
-                .catch(e => {
-                    console.error("データ取得エラー:", e);
-                    // ここでエラーが出続ける場合、サーバー側のURLを確認してください
-                });
+                .catch(e => console.error("データ取得エラー:", e));
         }
 
         function refresh(key, val, nId, lId, mVal) {
@@ -83,7 +85,6 @@
             const len = history[key].length;
             const pts = history[key].map((yVal, i) => {
                 const x = len > 1 ? (i / (len - 1)) * 100 : 0;
-                // 100(底)から割合を引くシンプルな計算
                 const y = 100 - (Math.min(yVal, mVal) / mVal * 100);
                 return x + "," + y;
             }).join(' ');
