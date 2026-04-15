@@ -64,8 +64,11 @@
         let history = { cpu: [], memory: [], disk: [] };
 
         function update() {
-            fetch('/api/stats')
-                .then(res => res.json())
+            fetch('/api/stats', { credentials:'include'})
+                .then(res => {
+                    if(!res.ok)throw new Error('Network response was not ok');
+                    return res.json();
+                })
                 .then(data => {
                     refresh('cpu', data.cpu, 'cpu-num', 'cpu-line', 200);
                     refresh('memory', data.memory, 'mem-num', 'mem-line', 100);
