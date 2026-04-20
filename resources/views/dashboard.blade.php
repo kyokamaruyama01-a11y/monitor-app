@@ -2,9 +2,16 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <title>サーバ監視</title>
+    <title>サーバ監視ダッシュボード</title>
     <style>
-        body { background: #f0f2f5; font-family: 'Segoe UI', sans-serif; display: flex; gap: 20px; justify-content: center; padding: 40px; }
+        /* レイアウト調整：タイトルを上に、パネルを横並びにするために flex-direction を column に変更 */
+        body { background: #f0f2f5; font-family: 'Segoe UI', sans-serif; display: flex; flex-direction: column; align-items: center; padding: 40px; }
+        
+        /* タイトルのスタイル */
+        h1 { color: #333; margin-bottom: 30px; font-size: 1.8rem; }
+
+        .container { display: flex; gap: 20px; justify-content: center; }
+
         .panel { 
             background: white; width: 180px; height: 420px; border-radius: 12px; 
             box-shadow: 0 4px 15px rgba(0,0,0,0.1); display: flex; flex-direction: column; 
@@ -13,6 +20,9 @@
         .info { padding: 20px 10px; text-align: center; border-bottom: 1px solid #f5f5f5; }
         .label { font-size: 0.75rem; color: #888; font-weight: bold; margin-bottom: 5px; }
         .val { font-size: 2rem; font-weight: bold; font-family: 'Consolas', monospace; }
+        /* 単位(%)のサイズを少し小さく調整 */
+        .unit { font-size: 1.2rem; margin-left: 2px; }
+
         .graph { flex-grow: 1; background: #ffffff; position: relative; border-top: 1px solid #eee; }
         svg { width: 100%; height: 100%; display: block; }
         polyline { 
@@ -29,33 +39,46 @@
 </head>
 <body>
 
-    <div class="panel">
-        <div class="info"><div class="label">CPU LOAD</div><div id="cpu-num" class="val cpu-color">0.0</div></div>
-        <div class="graph">
-            <svg viewBox="0 0 100 100" preserveAspectRatio="none">
-                <line x1="0" y1="100" x2="100" y2="100" stroke="#ddd" stroke-width="1" />
-                <polyline id="cpu-line" stroke="#3182ce"></polyline>
-            </svg>
-        </div>
-    </div>
+    <h1>サーバ監視ダッシュボード</h1>
 
-    <div class="panel">
-        <div class="info"><div class="label">MEMORY</div><div id="mem-num" class="val mem-color">0.0</div></div>
-        <div class="graph">
-            <svg viewBox="0 0 100 100" preserveAspectRatio="none">
-                <line x1="0" y1="100" x2="100" y2="100" stroke="#ddd" stroke-width="1" />
-                <polyline id="mem-line" stroke="#48bb78"></polyline>
-            </svg>
+    <div class="container">
+        <div class="panel">
+            <div class="info">
+                <div class="label">CPU LOAD</div>
+                <div class="val cpu-color"><span id="cpu-num">0.0</span><span class="unit">%</span></div>
+            </div>
+            <div class="graph">
+                <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                    <line x1="0" y1="100" x2="100" y2="100" stroke="#ddd" stroke-width="1" />
+                    <polyline id="cpu-line" stroke="#3182ce"></polyline>
+                </svg>
+            </div>
         </div>
-    </div>
 
-    <div class="panel">
-        <div class="info"><div class="label">DISK USAGE</div><div id="disk-num" class="val disk-color">0.0</div></div>
-        <div class="graph">
-            <svg viewBox="0 0 100 100" preserveAspectRatio="none">
-                <line x1="0" y1="100" x2="100" y2="100" stroke="#ddd" stroke-width="1" />
-                <polyline id="disk-line" stroke="#ed8936"></polyline>
-            </svg>
+        <div class="panel">
+            <div class="info">
+                <div class="label">MEMORY</div>
+                <div class="val mem-color"><span id="mem-num">0.0</span><span class="unit">%</span></div>
+            </div>
+            <div class="graph">
+                <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                    <line x1="0" y1="100" x2="100" y2="100" stroke="#ddd" stroke-width="1" />
+                    <polyline id="mem-line" stroke="#48bb78"></polyline>
+                </svg>
+            </div>
+        </div>
+
+        <div class="panel">
+            <div class="info">
+                <div class="label">DISK USAGE</div>
+                <div class="val disk-color"><span id="disk-num">0.0</span><span class="unit">%</span></div>
+            </div>
+            <div class="graph">
+                <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                    <line x1="0" y1="100" x2="100" y2="100" stroke="#ddd" stroke-width="1" />
+                    <polyline id="disk-line" stroke="#ed8936"></polyline>
+                </svg>
+            </div>
         </div>
     </div>
 
